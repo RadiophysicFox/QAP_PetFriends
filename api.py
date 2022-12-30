@@ -3,6 +3,7 @@ import json
 import requests
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 from pathlib import Path
+from decorators import write_log
 
 
 class PetFriends:
@@ -11,6 +12,7 @@ class PetFriends:
     def __init__(self):
         self.base_url = "https://petfriends.skillfactory.ru/"
 
+    @write_log
     def get_api_key(self, email: str, passwd: str) -> json:
         """Метод делает запрос к API сервера и возвращает статус запроса и результат в формате
         JSON с уникальным ключём пользователя, найденного по указанным email и паролем"""
@@ -28,6 +30,7 @@ class PetFriends:
             result = res.text
         return status, result
 
+    @write_log
     def get_list_of_pets(self, auth_key: json, filter: str = "") -> json:
         """Метод делает запрос к API сервера и возвращает статус запроса и результат в формате JSON
         со списком найденных питомцев, совпадающих с фильтром. На данный момент фильтр может иметь
@@ -46,6 +49,7 @@ class PetFriends:
             result = res.text
         return status, result
 
+    @write_log
     def add_new_pet(self, auth_key: json, name: str, animal_type: str,
                     age: str, pet_photo: str) -> json:
         """Метод отправляет (постит) на сервер данные о добавляемом питомце и возвращает статус
@@ -70,6 +74,7 @@ class PetFriends:
         print(result)
         return status, result
 
+    @write_log
     def delete_pet(self, auth_key: json, pet_id: str) -> json:
         """Метод отправляет на сервер запрос на удаление питомца по указанному ID и возвращает
         статус запроса и результат в формате JSON с текстом уведомления об успешном удалении.
@@ -86,6 +91,7 @@ class PetFriends:
             result = res.text
         return status, result
 
+    @write_log
     def update_pet_info(self, auth_key: json, pet_id: str, name: str,
                         animal_type: str, age: int) -> json:
         """Метод отправляет запрос на сервер об обновлении данных питомца по указанному ID и
@@ -107,6 +113,7 @@ class PetFriends:
             result = res.text
         return status, result
 
+    @write_log
     def add_new_pet_without_photo(self, auth_key: json, name: str, animal_type: str, age: str) -> json:
         """Метод отправляет (постит) на сервер данные о добавляемом питомце (без фото) и возвращает статус
         запроса на сервер и результат в формате JSON с данными добавленного питомца"""
@@ -129,6 +136,7 @@ class PetFriends:
         print(result)
         return status, result
 
+    @write_log
     def add_pet_photo(self, auth_key: json, pet_id: str, pet_photo: str) -> json:
         """Метод отправляет (постит) на сервер фото питомца и возвращает статус запроса на сервер
         и результат в формате JSON с обновлёнными данными питомца"""
